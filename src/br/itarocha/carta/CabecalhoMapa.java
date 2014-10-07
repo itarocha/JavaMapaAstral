@@ -1,4 +1,4 @@
-package br.itarocha.carta.main;
+package br.itarocha.carta;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

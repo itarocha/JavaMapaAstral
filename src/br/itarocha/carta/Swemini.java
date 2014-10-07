@@ -1,4 +1,4 @@
-package br.itarocha.carta.main;
+package br.itarocha.carta;
 
 //#ifdef J2ME
 //#define JAVAME

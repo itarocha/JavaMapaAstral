@@ -1,4 +1,4 @@
-package br.itarocha.carta.main;
+package br.itarocha.carta;
 
 public class ItemAspecto {
 	private PlanetaAspecto planetaA;

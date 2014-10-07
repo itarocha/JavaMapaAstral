@@ -1,4 +1,4 @@
-package br.itarocha.carta.main;
+package br.itarocha.carta;
 
 public class Coordenada {
 	private int grau;

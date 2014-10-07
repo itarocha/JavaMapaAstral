@@ -1,4 +1,4 @@
-package br.itarocha.carta.main;
+package br.itarocha.carta;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,9 +66,10 @@ public class Main {
 		
 		cabsp.setLatitude(new Coordenada(18,55,7,"-"));
 		cabsp.setLongitude(new Coordenada(48,16,38,"-"));
-		Mapa mapaSaoPaulo = new Mapa(cabsp);
-		mapaSaoPaulo.display();
+		ConstrutorMapa mapaSaoPaulo = new ConstrutorMapa();
 		
+		Mapa mapa = mapaSaoPaulo.buildMapa(cabsp);
+		mapaSaoPaulo.display(mapa);
 	}
 }
 /*

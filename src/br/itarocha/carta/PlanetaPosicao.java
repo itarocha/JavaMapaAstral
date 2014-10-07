@@ -1,8 +1,10 @@
-package br.itarocha.carta.main;
+package br.itarocha.carta;
 
 public class PlanetaPosicao {
 	private String nomePlaneta;
 	private String nomeSigno;
+	private String grau;
+	private String grauNaCasa;
 	private double posicao;
 	private boolean retrogrado;
 	private double latitude;
@@ -19,6 +21,18 @@ public class PlanetaPosicao {
 	}
 	public void setNomeSigno(String nomeSigno) {
 		this.nomeSigno = nomeSigno;
+	}
+	public String getGrau() {
+		return grau;
+	}
+	public void setGrau(String grau) {
+		this.grau = grau;
+	}
+	public String getGrauNaCasa() {
+		return grauNaCasa;
+	}
+	public void setGrauNaCasa(String grauNaCasa) {
+		this.grauNaCasa = grauNaCasa;
 	}
 	public double getPosicao() {
 		return posicao;
@@ -49,6 +63,10 @@ public class PlanetaPosicao {
 	}
 	public void setDirecao(double direcao) {
 		this.direcao = direcao;
+	}
+	
+	public String getStatusRetrogrado(){
+		return this.isRetrogrado() ? "R" : "D";
 	}
 
 }

@@ -1,4 +1,4 @@
-package br.itarocha.carta.main;
+package br.itarocha.carta;
 
 /// <summary>
 /// Support for textual and numeric conversions.

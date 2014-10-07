@@ -1,4 +1,4 @@
-package br.itarocha.carta.main;
+package br.itarocha.carta;
 
 public class CartaUtil {
 
@@ -47,19 +47,19 @@ public class CartaUtil {
 		
 		double resultado = Math.abs(b-a);
 		if (resultado <= 8f){
-			retorno = "Cj";
+			retorno = "cj";
 		} else
 		if ((resultado >= 52f) && (resultado < 69f)) {
-			retorno = "Sx";
+			retorno = "sx";
 		} else
 		if ((resultado >= 112f) && (resultado < 129f)) {
-			retorno = "Tg";
+			retorno = "tg";
 		} else
 		if ((resultado >= 82f) && (resultado < 99f)) {
-			retorno = "Qd";
+			retorno = "qd";
 		} else
 		if ((resultado >= 172f) && (resultado < 189f)) {
-			retorno = "Op";
+			retorno = "op";
 		}
 		return retorno;
 	}	

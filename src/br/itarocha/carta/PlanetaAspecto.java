@@ -1,13 +1,16 @@
-package br.itarocha.carta.main;
+package br.itarocha.carta;
 
 public class PlanetaAspecto {
-	private int planeta;
+	private Integer planeta;
 	private int coordenada;
 	private double posicao;
+	private String grau;
+	private String sigla;
+	
 	public int getPlaneta() {
 		return planeta;
 	}
-	public void setPlaneta(int planeta) {
+	public void setPlaneta(Integer planeta) {
 		this.planeta = planeta;
 	}
 	public int getCoordenada() {
@@ -21,5 +24,17 @@ public class PlanetaAspecto {
 	}
 	public void setPosicao(double posicao) {
 		this.posicao = posicao;
+	}
+	public String getGrau() {
+		return grau;
+	}
+	public void setGrau(String grau) {
+		this.grau = grau;
+	}
+	public String getSigla() {
+		return sigla;
+	}
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
 	}
 }
