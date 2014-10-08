@@ -2,6 +2,7 @@ package br.itarocha.carta;
 
 public class PlanetaPosicao {
 	private String nomePlaneta;
+	private String siglaPlaneta;
 	private String nomeSigno;
 	private String grau;
 	private String grauNaCasa;
@@ -18,6 +19,12 @@ public class PlanetaPosicao {
 	}
 	public String getNomeSigno() {
 		return nomeSigno;
+	}
+	public void setSiglaPlaneta(String siglaPlaneta) {
+		this.siglaPlaneta = siglaPlaneta;
+	}
+	public String getSiglaPlaneta() {
+		return siglaPlaneta;
 	}
 	public void setNomeSigno(String nomeSigno) {
 		this.nomeSigno = nomeSigno;

@@ -36,7 +36,6 @@ public class Main {
 		//double longitude = Conversions.Coordinates2Degrees("18.55.07","-");
 		//double latitude = Conversions.Coordinates2Degrees("48.16.38","-");
 		*/
-
 		
 		// Hora sideral: 14:52:57
 		// CabecalhoMapa(2014,9,17,15,00,00,-3);
@@ -56,20 +55,23 @@ public class Main {
 		*/
 		
 		
-		System.out.println("\n**********************************************\n");
-		CabecalhoMapa cabsp = new CabecalhoMapa(2001,9,28,7,0,0,-3);
-		cabsp.setNome("Lívia");
+		//System.out.println("\n**********************************************\n");
+		//CabecalhoMapa cabsp = new CabecalhoMapa("1972.6.29","5.0.0",-3,"-18.55.7","-48.16.38");
+		
+		
+		//CabecalhoMapa cabsp = new CabecalhoMapa(2001,9,28,7,0,0,-3);
 		//cabsp.setLatitude(new Coordenada(23,32,51,"-"));
 		//cabsp.setLongitude(new Coordenada(46,38,10,"-"));
 		//double longitude = Conversions.Coordinates2Degrees("18.55.07","-");
 		//double latitude = Conversions.Coordinates2Degrees("48.16.38","-");
 		
-		cabsp.setLatitude(new Coordenada(18,55,7,"-"));
-		cabsp.setLongitude(new Coordenada(48,16,38,"-"));
-		ConstrutorMapa mapaSaoPaulo = new ConstrutorMapa();
+		//cabsp.setLatitude(new Coordenada(18,55,7,"-"));
+		//cabsp.setLongitude(new Coordenada(48,16,38,"-"));
+		ConstrutorMapa construtor = new ConstrutorMapa();
 		
-		Mapa mapa = mapaSaoPaulo.buildMapa(cabsp);
-		mapaSaoPaulo.display(mapa);
+		Mapa mapa = construtor.buildMapa("1972.6.29","5.0.0",-3,"-18.55.7","-48.16.38");
+		mapa.setNome("Lívia");
+		construtor.display(mapa);
 	}
 }
 /*

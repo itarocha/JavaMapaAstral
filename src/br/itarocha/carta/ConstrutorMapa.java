@@ -2,6 +2,7 @@ package br.itarocha.carta;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import swisseph.SweConst;
 import swisseph.SweDate;
 import swisseph.SwissEph;
@@ -43,8 +44,8 @@ public class ConstrutorMapa {
 		preparar();
 	}
 	
-	public Mapa buildMapa(CabecalhoMapa cab){
-		Mapa mapa = new Mapa(cab);
+	public Mapa buildMapa(String data, String hora, int fuso, String lat, String lon){
+		Mapa mapa = new Mapa(data,hora,fuso,lat,lon);
 		buildMapa(mapa);
 		return mapa;
 	}
@@ -63,10 +64,10 @@ public class ConstrutorMapa {
 		// http://www.astrosage.com/astrology/ayanamsa-calculator.asp
 		// Get and print ayanamsa value for info:
 		this.sweDate = new SweDate(	
-				mapa.getCabecalhoMapa().getAno(),
-				mapa.getCabecalhoMapa().getMes(),
-				mapa.getCabecalhoMapa().getDia(),
-				mapa.getCabecalhoMapa().getHoraDoubleComFuso());
+				mapa.getAno(),
+				mapa.getMes(),
+				mapa.getDia(),
+				mapa.getHoraDoubleComFuso());
 		
 		this.sweDate.setCalendarType(this.sweDate.SE_GREG_CAL, this.sweDate.SE_KEEP_DATE);
 		this.ayanamsa = this.sw.swe_get_ayanamsa_ut(this.sweDate.getJulDay());
@@ -123,6 +124,7 @@ public class ConstrutorMapa {
 			PlanetaPosicao pp = new PlanetaPosicao();
 			
 			pp.setNomePlaneta(planeta.getNome());
+			pp.setSiglaPlaneta(planeta.getSigla());
 			pp.setNomeSigno(signos[signo-1]);
 			pp.setPosicao(x2[0]);
 			pp.setGrau( CartaUtil.grau(x2[0]) );
@@ -151,8 +153,8 @@ public class ConstrutorMapa {
 		
 		this.casas = this.getHouses(this.sw, 
 				sweDate.getJulDay(), 
-				mapa.getCabecalhoMapa().getLatitude().Coordinates2Degrees(),
-				mapa.getCabecalhoMapa().getLongitude().Coordinates2Degrees() );
+				mapa.getLatitude().Coordenada2Graus(),
+				mapa.getLongitude().Coordenada2Graus() );
 		
 		for (int i = 1; i < 21; i++){
 			sign = (int)(casas[i] / 30) + 1;
@@ -227,8 +229,8 @@ public class ConstrutorMapa {
     }
 	
     private void displayCabecalho(Mapa mapa){
-    	double latitude = mapa.getCabecalhoMapa().getLatitude().Coordinates2Degrees();
-    	double longitude = mapa.getCabecalhoMapa().getLongitude().Coordinates2Degrees();	
+    	double latitude = mapa.getLatitude().Coordenada2Graus();
+    	double longitude = mapa.getLongitude().Coordenada2Graus();	
     	int signoAscendente = (int)(casas[1] / 30)+1;
     	
 		// Detalhes de entrada:
@@ -244,25 +246,23 @@ public class ConstrutorMapa {
 	private void displayPlanetas(Mapa mapa){
 		System.out.println("\nPLANETAS");
 		for(PlanetaPosicao pp : mapa.getPosicoesPlanetas()){
-			System.out.print(
-				  String.format("%-12s",pp.getNomePlaneta())+"\t"+ 	// Planeta
-				  pp.getGrau()+" "+				// Longitude  
-				  pp.getStatusRetrogrado()+" "+ 			// Retrogrado ou Direto?
-				  String.format("%10.7f",pp.getLatitude())+"\t"+	// Latitude
-				  String.format("%10.7f",pp.getDistancia())+"\t"+   // Distância
-				  String.format("%10.7f",pp.getDirecao())+"\t"+   	// Direção
-				  pp.getGrauNaCasa()+			// Grau na Casa 
-				  pp.getNomeSigno()+"\n" // Signo					// Nome do Signo
-				  );
+			// %10.7f\t %10.7f\t %10.7f\t
+			System.out.println(String.format("%s %s %s %s %s",
+					pp.getSiglaPlaneta(), 		// Planeta
+					pp.getGrau(),				// Longitude  
+					pp.getGrauNaCasa(),			// Grau na Casa 
+					pp.getNomeSigno(),			// Signo
+					pp.getStatusRetrogrado() 	// Retrogrado ou Direto?
+					)); 		
 		}
 	}
 
 	private void displayCuspides(Mapa mapa){ 
 		// TODO: REGIÃO DE DISPLAY (ISOLAR!!!)
 		System.out.println("\nCÚSPIDES");
-		System.out.println("\nCasa 1 = Ascendente\nCasa 10 = MC\n");
+		//System.out.println("\nCasa 1 = Ascendente\nCasa 10 = MC\n");
 		for (Cuspide c: mapa.getListaCuspides() ){
-			System.out.println(String.format("casa %2d %s %s %s", 
+			System.out.println(String.format("casa %02d %s %s %s", 
 					c.getNumero(), 
 					c.getGrau(), 
 					c.getGrauNaCasa(), 
@@ -274,9 +274,6 @@ public class ConstrutorMapa {
 		// TODO: REGIÃO DE DISPLAY (ISOLAR!!!)
 		System.out.println("\nASPECTOS");
 		for(ItemAspecto ite : mapa.getListaAspectos()){
-			//String planetaA = mapPlanetas.get(ite.getPlanetaA().getCoordenada()).getSigla();
-			//String planetaB = mapPlanetas.get(ite.getPlanetaB().getCoordenada()).getSigla();
-			
 			PlanetaAspecto pA = ite.getPlanetaA();
 			PlanetaAspecto pB = ite.getPlanetaB();
 			
@@ -300,3 +297,11 @@ public class ConstrutorMapa {
 //SweConst.SE_CHIRON
 //get the name of the planet p
 //snam=sw.swe_get_planet_name(p);
+
+
+
+//%-12s %10.7f\t %10.7f\t %10.7f\t
+//pp.getSiglaPlaneta()
+//pp.getLatitude(),			// Latitude
+//pp.getDistancia(),   		// Distância
+//pp.getDirecao()   		// Direção

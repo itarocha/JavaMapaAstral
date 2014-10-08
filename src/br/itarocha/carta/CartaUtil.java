@@ -7,17 +7,29 @@ public class CartaUtil {
 	}
 	
 	public static String grau(double d) {
+		int[] g = grauToArray(d);
+		//return String.format("%3d° %02d' %02.0f\"", g[0], g[1], g[2]);
+		return String.format("%03d.%02d.%02d", g[0], g[1], g[2]);
+	}
+
+	public static int[] grauToArray(double d){
+		int[] retorno = new int[3];
+
 		d = Math.abs(d);
 		d += 0.5/3600./10000.;	// round to 1/1000 of a second
 		int deg = (int) d;
 		d = (d - deg) * 60;
 		int min = (int) d;
 		d = (d - min) * 60;
-		double sec = d;
+		int sec = (int)d;
 
-		return String.format("%3d° %02d' %02.0f\"", deg, min, sec);
+		retorno[0] = deg;
+		retorno[1] = min;
+		retorno[2] = sec;
+		
+		return retorno;
 	}
-
+	
     public static String signGlyphFromIndex(int i) {
         String c;
         switch (i) {
