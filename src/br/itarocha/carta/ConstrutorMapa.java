@@ -17,7 +17,7 @@ public class ConstrutorMapa {
 	private SwissEph sw;
 	private double ayanamsa;
 
-	private static final int SID_METHOD = SweConst.SE_SIDM_LAHIRI; // .SE_SIDM_LAHIRI;
+	private static final int SID_METHOD = SweConst.SE_SIDM_LAHIRI;
 	
 	private static final String[] signos = {"ar","to","ge","ca","le","vi","li","es","sg","cp","aq","pe"};
 	private List <Planeta> mapPlanetas = new ArrayList<Planeta>();
@@ -231,7 +231,7 @@ public class ConstrutorMapa {
     private void displayCabecalho(Mapa mapa){
     	double latitude = mapa.getLatitude().Coordenada2Graus();
     	double longitude = mapa.getLongitude().Coordenada2Graus();	
-    	int signoAscendente = (int)(casas[1] / 30)+1;
+    	////////int signoAscendente = (int)(casas[1] / 30)+1;
     	
 		// Detalhes de entrada:
 		System.out.println("Data: " + sweDate);
@@ -240,13 +240,12 @@ public class ConstrutorMapa {
 				" / " +
 				CartaUtil.grau(latitude) + (latitude > 0 ? "N" : "S"));
 		System.out.println("Ayanamsa: " + CartaUtil.grau(ayanamsa) + " (" + sw.swe_get_ayanamsa_name(SID_METHOD) + ")");
-		System.out.println("Ascendente: " + CartaUtil.grauNaCasa(casas[1])+" "+signos[signoAscendente-1]);
+		///////System.out.println("Ascendente: " + CartaUtil.grauNaCasa(casas[1])+" "+signos[signoAscendente-1]);
     }
 	
 	private void displayPlanetas(Mapa mapa){
 		System.out.println("\nPLANETAS");
 		for(PlanetaPosicao pp : mapa.getPosicoesPlanetas()){
-			// %10.7f\t %10.7f\t %10.7f\t
 			System.out.println(String.format("%s %s %s %s %s",
 					pp.getSiglaPlaneta(), 		// Planeta
 					pp.getGrau(),				// Longitude  
@@ -258,9 +257,7 @@ public class ConstrutorMapa {
 	}
 
 	private void displayCuspides(Mapa mapa){ 
-		// TODO: REGIÃO DE DISPLAY (ISOLAR!!!)
 		System.out.println("\nCÚSPIDES");
-		//System.out.println("\nCasa 1 = Ascendente\nCasa 10 = MC\n");
 		for (Cuspide c: mapa.getListaCuspides() ){
 			System.out.println(String.format("casa %02d %s %s %s", 
 					c.getNumero(), 
@@ -271,7 +268,6 @@ public class ConstrutorMapa {
 	}
 
 	private void displayAspectos(Mapa mapa){
-		// TODO: REGIÃO DE DISPLAY (ISOLAR!!!)
 		System.out.println("\nASPECTOS");
 		for(ItemAspecto ite : mapa.getListaAspectos()){
 			PlanetaAspecto pA = ite.getPlanetaA();

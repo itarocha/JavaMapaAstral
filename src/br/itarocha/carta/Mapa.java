@@ -6,10 +6,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Mapa {
-	//private CabecalhoMapa cabecalho;
 	private String nome;
 	private String nomeCidade;
-	
 	
 	private Calendar calendar;
 	private Coordenada latitude;
@@ -22,12 +20,6 @@ public class Mapa {
 	private List<Cuspide> cuspides = new ArrayList<Cuspide>();
 	private List<PlanetaPosicao> posicoesPlanetas = new ArrayList<PlanetaPosicao>();
 
-	/*
-	public Mapa(CabecalhoMapa cabecalho){
-		this.cabecalho = cabecalho;
-	}
-	*/
-	
     /// <summary>
     /// Construtor do Cabeçalho do Mapa. 
     /// </summary>
@@ -88,7 +80,6 @@ public class Mapa {
 		this.fuso = fuso;
 	}
 	
-	
 	public String getNome() {
 		return nome;
 	}
@@ -121,42 +112,23 @@ public class Mapa {
 	public Coordenada getLatitude() {
 		return latitude;
 	}
-	/*
-	public void setLatitude(Coordenada latitude) {
-		this.latitude = latitude;
-	}
-	*/
+
 	public Coordenada getLongitude() {
 		return longitude;
 	}
-	/*
-	public void setLongitude(Coordenada longitude) {
-		this.longitude = longitude;
-	}
-	*/
+
 	public String getData() {
 		return data;
 	}
-	/*
-	public void setData(String data) {
-		this.data = data;
-	}
-	*/
+
 	public String getHora() {
 		return hora;
-	}/*
-	public void setHora(String hora) {
-		this.hora = hora;
 	}
-	*/
+
 	public int getFuso() {
 		return fuso;
 	}
-	/*
-	public void setFuso(int fuso) {
-		this.fuso = fuso;
-	}
-	 */
+
 	public int getAno(){
 		return calendar.get(Calendar.YEAR);
 	}
@@ -176,11 +148,6 @@ public class Mapa {
 		return calendar.get(Calendar.SECOND);
 	}
 	
-	/*
-	public CabecalhoMapa getCabecalhoMapa(){
-		return this.cabecalho;
-	}
-	*/
 	public List<ItemAspecto> getListaAspectos(){
 		return this.la;
 	}
@@ -192,5 +159,5 @@ public class Mapa {
 	public List<PlanetaPosicao> getPosicoesPlanetas(){
 		return this.posicoesPlanetas;
 	}
-	
+
 }
