@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/swisseph"/>
-	<classpathentry kind="lib" path="res/swissephSWI-2.00.00-01.jar"/>
+	<classpathentry exported="true" kind="lib" path="res/swissephSWI-2.00.00-01.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

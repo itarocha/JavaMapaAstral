@@ -351,6 +351,50 @@ public class Conversions {
         return x;
     }
 
+    public static String GrauDecimalParaGrauSexagesimal(double value){
+    	int divider = 1;
+    	String sinal=""; 
+    	double valorIni = value;
+    	
+    	if (value < 0) {
+    		value *= -1;
+    		sinal = "-";
+    	}
+    	
+        final int deg,min,sec; 
+        deg = (int) value; // Round toward 0
+        value = (value-deg)*60;
+        min = (int) value; // Round toward 0
+        value = (value-min)*60; sec = (int) value; // Round toward 0
+        value -= sec;          // The remainer (fraction of seconds)
+
+    	String retorno = String.format("%s%03d.%02d.%02d",sinal,deg,min,sec); 
+    	System.out.println(String.format("%6f %s",valorIni,retorno));
+    	
+    	return retorno;
+        /*
+        return (((deg*100 + min)*100 + sec) + value)/divider;
+    	
+    	
+    	
+    	
+    	int g, m, s;
+    	
+    	
+    	g = (int) xvalor;
+    	xvalor = (xvalor - g) * 60;
+    	m = (int) xvalor;
+    	xvalor = (xvalor - m) * 60;
+    	s = (int) xvalor;
+    	
+    	String retorno = String.format("%3d.%2d.%2d",g,m,s); 
+    	System.out.println(String.format("%6f %s",xvalor,retorno));
+    	
+    	return retorno;
+    	*/
+    	
+    }
+    
     /*
     /// <summary>
     /// Converts a text with a data into an array of integers, format of text yyyy.mm.dd

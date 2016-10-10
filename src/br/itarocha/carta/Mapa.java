@@ -1,5 +1,7 @@
 package br.itarocha.carta;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -15,6 +17,8 @@ public class Mapa {
 	private String data; // 
 	private String hora; //
 	private int fuso;
+	private double sideralTime; 
+	
 	
 	private List<ItemAspecto> la = new ArrayList<ItemAspecto>();
 	private List<Cuspide> cuspides = new ArrayList<Cuspide>();
@@ -27,7 +31,8 @@ public class Mapa {
     /// <param name="hora">Hora no formato hh.mm.ss</param>
     /// <param name="fuso">Fuso horário</param>
     /// <returns>The converted string</returns>
-	public Mapa(String data, String hora, int fuso, String lat, String lon){
+	public Mapa(String nome, String data, String hora, int fuso, String lat, String lon){
+		this.nome = nome;
 		int a = 0, m = 0, d = 0, h = 0, n = 0, s = 0;		
 		int latdeg = 0, latmin = 0, latsec = 0;
 		int londeg = 0, lonmin = 0, lonsec = 0;
@@ -60,6 +65,8 @@ public class Mapa {
             latdeg = Integer.parseInt(slat[0]);
             latmin = Integer.parseInt(slat[1]);
             latsec = Integer.parseInt(slat[2]);
+            
+            
         }
         catch(Exception e) {
             //x = -999;  // TODO better error handling
@@ -110,23 +117,25 @@ public class Mapa {
 	}
 	
 	public Coordenada getLatitude() {
-		return latitude;
+		return this.latitude;
 	}
 
 	public Coordenada getLongitude() {
-		return longitude;
+		return this.longitude;
 	}
 
 	public String getData() {
-		return data;
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		return df.format(calendar.getTime());
 	}
 
 	public String getHora() {
-		return hora;
+		DateFormat df = new SimpleDateFormat("HH:mm");
+		return df.format(calendar.getTime());
 	}
 
 	public int getFuso() {
-		return fuso;
+		return this.fuso;
 	}
 
 	public int getAno(){
@@ -158,6 +167,14 @@ public class Mapa {
 	
 	public List<PlanetaPosicao> getPosicoesPlanetas(){
 		return this.posicoesPlanetas;
+	}
+
+	public double getSideralTime() {
+		return sideralTime;
+	}
+
+	public void setSideralTime(double sideralTime) {
+		this.sideralTime = sideralTime;
 	}
 
 }

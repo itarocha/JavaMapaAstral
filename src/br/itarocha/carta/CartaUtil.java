@@ -3,7 +3,11 @@ package br.itarocha.carta;
 public class CartaUtil {
 
 	public static String grauNaCasa(double d){
-		return grau(d % 30);
+		//return grau(d % 30);
+
+		int[] g = grauToArray(d % 30);
+		//return String.format("%3d° %02d' %02.0f\"", g[0], g[1], g[2]);
+		return String.format("%02d.%02d.%02d", g[0], g[1], g[2]);
 	}
 	
 	public static String grau(double d) {

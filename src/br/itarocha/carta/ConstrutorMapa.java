@@ -32,11 +32,15 @@ public class ConstrutorMapa {
 		mapPlanetas.add(new Planeta(SweConst.SE_SATURN, "sat", "Saturno"));
 		mapPlanetas.add(new Planeta(SweConst.SE_URANUS, "ura", "Urano")); 
 		mapPlanetas.add(new Planeta(SweConst.SE_NEPTUNE, "net", "Netuno")); 
-		mapPlanetas.add(new Planeta(SweConst.SE_PLUTO, "plu", "Plutão")); 
+		mapPlanetas.add(new Planeta(SweConst.SE_PLUTO, "plu", "Plutão"));
+
 		mapPlanetas.add(new Planeta(SweConst.SE_TRUE_NODE, "tnd", "True Node"));
 		
 		mapPlanetas.add(new Planeta(SweConst.SE_ASC, "asc", "Ascendente"));
 		mapPlanetas.add(new Planeta(SweConst.SE_MC, "mce", "Meio do Céu"));
+
+		// RETIREI ESSE NEGÓCIO DE NODO NORTE
+		
 	}
 	
 	public ConstrutorMapa(){
@@ -44,19 +48,15 @@ public class ConstrutorMapa {
 		preparar();
 	}
 	
-	public Mapa buildMapa(String data, String hora, int fuso, String lat, String lon){
-		Mapa mapa = new Mapa(data,hora,fuso,lat,lon);
+	public Mapa buildMapa(String nome, String data, String hora, int fuso, String lat, String lon){
+		Mapa mapa = new Mapa(nome, data, hora, fuso, lat, lon);
 		buildMapa(mapa);
+		//System.out.println("Ayanamsa: " + ayanamsa);
+		//System.out.println("Ayanamsa: " + CartaUtil.grau(ayanamsa) + " (" + sw.swe_get_ayanamsa_name(SID_METHOD) + ")");
+		
 		return mapa;
 	}
 
-	public void display(Mapa mapa){
-		displayCabecalho(mapa);
-		displayPlanetas(mapa);
-		displayCuspides(mapa);
-		displayAspectos(mapa);
-	}
-	
 	// TODO: Deve retornar uma classe Mapa
 	private void buildMapa(Mapa mapa){
 		//http://www.timeanddate.com/worldclock/switzerland/zurich
@@ -93,12 +93,16 @@ public class ConstrutorMapa {
 		double tjd, te;
 		tjd=sweDate.getJulDay();
 		te = tjd + sweDate.getDeltaT(tjd);
+		double x[]=new double[6];
 		double x2[]=new double[6];
 		StringBuffer serr=new StringBuffer();
 		boolean retrogrado = false;
 		int idxpos = -1;
 
 		mapa.getPosicoesPlanetas().clear();
+		
+		iflgret = sw.swe_calc(te, SweConst.SE_ECL_NUT, (int)iflag, x, serr);
+		
 		
 		// O último era SE_CHIRON
 		for(int xis = 0; xis <= 10; xis++){
@@ -134,6 +138,47 @@ public class ConstrutorMapa {
 			pp.setDistancia(x2[2]);
 			pp.setDirecao(x2[3]);
 			
+			
+			
+			//swisseph.SwissEph.sw
+			//SwissEph.swe_
+			
+            //double hpos = swe_house_pos(armc, lat, eps_true, hsys, x, ref serr);
+            //double hpos = swe_house_pos(0d, 0d, 0d, 0, 0, 0 0);
+			
+	        //double hpos = sw.swe_houses(jdnr, SweConst.SEFLG_SPEED, lat, lon, 'P', xx, yy);
+			// 
+
+			
+			/*
+			sw.swe_sid
+			
+            double sidt = sw.swe_sidtime(tjd) + lon / 15;
+            if (sidt >= 24)
+                sidt -= 24;
+            if (sidt < 0)
+                sidt += 24;
+            armc = sidt * 15;
+            */
+			
+			
+			double _geolat = mapa.getLatitude().Coordenada2Graus(); // ok
+			double _armc = mapa.getSideralTime(); // ok
+			double _eps_true = x[0];
+			//System.out.println("Latitude.... "+_geolat);
+			//System.out.println("Sideral Time.... "+_armc);
+			//System.out.println("EPS TRUE.... "+_eps_true);
+			
+			
+			
+			
+	        double hpos = sw.swe_house_pos(_armc, _geolat, _eps_true, 'P', x2, serr);
+			
+			
+			
+			pp.setCasa(hpos);
+			
+			
 			mapa.getPosicoesPlanetas().add(pp);
 		}
 		
@@ -152,6 +197,7 @@ public class ConstrutorMapa {
 		mapa.getListaCuspides().clear();
 		
 		this.casas = this.getHouses(this.sw, 
+				mapa, 
 				sweDate.getJulDay(), 
 				mapa.getLatitude().Coordenada2Graus(),
 				mapa.getLongitude().Coordenada2Graus() );
@@ -212,12 +258,25 @@ public class ConstrutorMapa {
     ///  0: not used, 1..12 cusps 1..12, 13: asc., 14: MC, 15: ARMC, 16: Vertex,
     ///  17: Equatorial asc., 18: co-ascendant (Koch), 19: co-ascendant(Munkasey),
     ///  20: polar ascendant 
+	///
+	///  yy[0] = ascendant
+	///  yy[1] = mc
+	///  yy[2] = armc (= sidereal time) !!!!!
+	///  yy[3] = vertex
+	///  yy[4] = equatorial ascendant
+	///  yy[5] = co-ascendant (Walter Koch)
+	///  yy[6] = co-ascendant (Michael Munkasey)
+	///  yy[7] = polar ascendant (Michael Munkasey)
+	///  yy[8] = reserved for future use
+	///  yy[9] = reserved for future use
     ///</returns>
-    private double[] getHouses(SwissEph sw, double jdnr, double lat, double lon) {
+    private double[] getHouses(SwissEph sw, Mapa mapa, double jdnr, double lat, double lon) {
         double[] xx = new double[13];
         double[] yy = new double[10];
         double[] zz = new double[23];
         int flag = sw.swe_houses(jdnr, SweConst.SEFLG_SPEED, lat, lon, 'P', xx, yy);
+        
+        mapa.setSideralTime(yy[2]);
         
         for (int i = 0; i < 13; i++) {
             zz[i] = xx[i];
@@ -228,62 +287,7 @@ public class ConstrutorMapa {
         return zz;
     }
 	
-    private void displayCabecalho(Mapa mapa){
-    	double latitude = mapa.getLatitude().Coordenada2Graus();
-    	double longitude = mapa.getLongitude().Coordenada2Graus();	
-    	////////int signoAscendente = (int)(casas[1] / 30)+1;
-    	
-		// Detalhes de entrada:
-		System.out.println("Data: " + sweDate);
-		System.out.println("Localização: " +
-				CartaUtil.grau(longitude) + (longitude > 0 ? "E" : "W") +
-				" / " +
-				CartaUtil.grau(latitude) + (latitude > 0 ? "N" : "S"));
-		System.out.println("Ayanamsa: " + CartaUtil.grau(ayanamsa) + " (" + sw.swe_get_ayanamsa_name(SID_METHOD) + ")");
-		///////System.out.println("Ascendente: " + CartaUtil.grauNaCasa(casas[1])+" "+signos[signoAscendente-1]);
-    }
-	
-	private void displayPlanetas(Mapa mapa){
-		System.out.println("\nPLANETAS");
-		for(PlanetaPosicao pp : mapa.getPosicoesPlanetas()){
-			System.out.println(String.format("%s %s %s %s %s",
-					pp.getSiglaPlaneta(), 		// Planeta
-					pp.getGrau(),				// Longitude  
-					pp.getGrauNaCasa(),			// Grau na Casa 
-					pp.getNomeSigno(),			// Signo
-					pp.getStatusRetrogrado() 	// Retrogrado ou Direto?
-					)); 		
-		}
-	}
-
-	private void displayCuspides(Mapa mapa){ 
-		System.out.println("\nCÚSPIDES");
-		for (Cuspide c: mapa.getListaCuspides() ){
-			System.out.println(String.format("casa %02d %s %s %s", 
-					c.getNumero(), 
-					c.getGrau(), 
-					c.getGrauNaCasa(), 
-					c.getSigno()));			
-		}
-	}
-
-	private void displayAspectos(Mapa mapa){
-		System.out.println("\nASPECTOS");
-		for(ItemAspecto ite : mapa.getListaAspectos()){
-			PlanetaAspecto pA = ite.getPlanetaA();
-			PlanetaAspecto pB = ite.getPlanetaB();
-			
-			System.out.println(String.format("%s %s %s (%s e %s) [%02d x %02d] = %s", 
-					pA.getSigla(), 
-					ite.getAspecto(),
-					pB.getSigla(),
-					pA.getGrau(),
-					pB.getGrau(),
-					pA.getCoordenada(), 
-					pB.getCoordenada(), 
-					ite.getAspecto() ));
-		}
-	}
+    
     
 }
 

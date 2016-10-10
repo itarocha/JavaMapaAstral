@@ -11,6 +11,9 @@ public class PlanetaPosicao {
 	private double latitude;
 	private double distancia;
 	private double direcao;
+	
+	private double casa;
+	
 	public String getNomePlaneta() {
 		return nomePlaneta;
 	}
@@ -74,6 +77,12 @@ public class PlanetaPosicao {
 	
 	public String getStatusRetrogrado(){
 		return this.isRetrogrado() ? "R" : "D";
+	}
+	public double getCasa() {
+		return this.casa;
+	}
+	public void setCasa(double casa) {
+		this.casa = casa;
 	}
 
 }
