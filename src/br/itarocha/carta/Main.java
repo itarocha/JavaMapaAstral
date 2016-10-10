@@ -28,60 +28,31 @@ import org.apache.http.util.EntityUtils;
 import com.google.gson.Gson;
 */
 
+
 class Pojo
 {
-String name;
-String age;
-//generate setter and getters
+	String name;
+	String age;
+	//generate setter and getters
 }
 
 public class Main {
 
-	private List<Cidade> listaCidades = new ArrayList<Cidade>();
-	
-	public Main(){
-		carregarArquivoCidades();
-	}
+	//private List<Cidade> listaCidades = new ArrayList<Cidade>();
+	private MapeadorCidades mapeador = new MapeadorCidades();
 
-	// ("Itamar","1972.6.29","5.0.0", Caxias, MA
-	public void go(String nome, String dataAAAAMMDD, String horaHHMMSS, String cidade, String uf ){
-		ConstrutorMapa construtor = new ConstrutorMapa();
-		DecoradorMapa decorador = new DecoradorMapa();
-
-		//Cidade c = getCidade("CAxíAS","ma");
-		//Cidade c = getCidade("Uberlândia","mG");
-		Cidade c = getCidade(cidade, uf);
-		if (c.getCodigo() > 0){
-    		Mapa mapa 	= construtor.buildMapa(nome, dataAAAAMMDD, horaHHMMSS,-3, c.getLatitude(),c.getLongitude());
-    		String json = decorador.getJSON(mapa);
-    		System.out.println(json);
-		}
-		
-		
-		//Mapa mapaItamar 	= construtor.buildMapa("Itamar","1972.6.29","5.0.0",-3,"-4.51.32","-43.21.22");
-		//Mapa mapaSaoPaulo	= construtor.buildMapa("São Paulo","2014.10.8","17.0.0",-3,"-23.32.51","-46.38.10");
-		//Mapa mapaLivia		= construtor.buildMapa("Lívia","2001.9.28","7.0.0",-3,"-18.55.7","-48.16.38");
-		//Mapa mapaSibele		= construtor.buildMapa("Sibele", "1978.9.30","10.0.0",-3,"-18.55.7","-48.16.38");
-		//Mapa mapaRosangela	= construtor.buildMapa("Rosangela", "1983.1.15","07.30.0",-3,"-18.52.14","-48.52.51");
-		//mapaLivia.setNome("Lívia");
-
-
-		//System.out.println("\n**********************************************\n");
-
-		/*
-		decorador.display(mapaLivia);
-		System.out.println("\n**********************************************\n");
-		//construtor.display(mapaSaoPaulo);
-		//System.out.println("\n**********************************************\n");
-		decorador.display(mapaSibele);
-		System.out.println("\n**********************************************\n");
-		decorador.display(mapaRosangela);
-		*/
-	}
-	
 	//http://th-mack.de/international/download/index.html
 	//http://www.radixpro.org/fix-east-west.html
 	public static void main( String[] args) {
+		
+		
+		/*
+		try {
+			mapeador.load("ephe/classes.prop");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		*/
 		
 		if (args.length != 5){
 			System.out.println("Entre com os 5 parâmetros com espaço");
@@ -107,105 +78,67 @@ public class Main {
 		
 		Main m = new Main();
 		m.go(nome, data, hora, cidade, uf);
+		
+		System.out.println("Eita");
 		//m.go("Itamar Rocha", "1972.06.29", "05.00.00", "Caxias", "MA");
 		
 		
 		//Conversions.GrauDecimalParaGrauSexagesimal(-43.3532d);
 		//Conversions.GrauDecimalParaGrauSexagesimal(-4.8655d);
-		
-		
 	}
 	
-	private void carregarArquivoCidades(){
-		
-	    String arquivoCSV = ".//ephe//cidades_brasil.csv ";
-	    BufferedReader br = null;
-	    String linha = "";
-	    String csvDivisor = ",";
-	    try {
-
-	        br = new BufferedReader(new FileReader(arquivoCSV));
-	        int i = -1;
-	        while (  ((linha = br.readLine()) != null) ) {
-	        	i++;
-
-	        	if (i > 0) {
-
-		    		/*
-		    		Ler o arquivo //ephe//cidades_brasil.csv 
-		    		"codigo","lat","e/w","lon","n/s","nome sem acento","uf","nome original","altitude","area"
-		    		1,"-16.45.26","W","-49.26.15","S","abadia de goias","GO","Abadia de Goiás",898.000,136.900
-		    		2,"-18.29.08","W","-47.24.11","S","abadia dos dourados","MG","Abadia dos Dourados",742.000,897.400
-		    		3,"-16.12.15","W","-48.42.25","S","abadiania","GO","Abadiânia",1052.000,1047.700
-		    		*/
-		            String[] cidade = linha.split(csvDivisor);
-		            
-		            Cidade c = new Cidade();
-		            /*
-		            int codigo = 0;
-		            codigo = Integer.parseInt(cidade[0]);
-		            */
-		            
-		            c.setCodigo(Integer.parseInt(cidade[0]));
-		            c.setNomeSemAcento(cidade[5].replaceAll("\"", ""));
-		            c.setUF(cidade[6].replaceAll("\"", ""));
-		            c.setNomeOriginal(cidade[7].replaceAll("\"", ""));
-		            c.setLatitude(cidade[1].replaceAll("\"", ""));
-		            c.setLongitude(cidade[3].replaceAll("\"", ""));
-		            
-		            this.listaCidades.add(c);
-		            
-		            /*
-		            System.out.println(String.format("%d,[%s],%s,%s,%s,%s",c.getCodigo(), 
-		            		c.getNomeSemAcento(), c.getNomeOriginal(), c.getUF(), c.getLatitude(), c.getLongitude()));
-		            */		
-		            
-	        	}
-	        	
-	        	
-	            
-
-	            /*
-	            System.out.println("País [code= " + pais[pais.length-2] 
-	                                 + " , name=" + pais[pais.length-1] + "]");
-				*/
-	        }
-
-	    } catch (FileNotFoundException e) {
-	        e.printStackTrace();
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    } finally {
-	        if (br != null) {
-	            try {
-	                br.close();
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    }
-		
+	public Main(){
+		//carregarArquivoCidades();
+		MapeadorCidades mapeador = new MapeadorCidades();
+		//mapeador.carregarArquivoCidades();
 	}
-	
-	public Cidade getCidade(String nome, String uf){
-		Cidade retorno = new Cidade();
-		String nomeSemAcento = removerAcentos(nome).toLowerCase();
-		uf = uf.toLowerCase();
-		for (Cidade c : listaCidades){
-			if ( c.getNomeSemAcento().equals(nomeSemAcento) &&
-				 c.getUF().toLowerCase().equals(uf)	
-			   ) {
-				retorno = c;
-				break;
-			}
+
+	// ("Itamar","1972.6.29","5.0.0", Caxias, MA
+	public void go(String nome, String dataAAAAMMDD, String horaHHMMSS, String cidade, String uf ){
+		
+		System.out.println(nome);
+		System.out.println(dataAAAAMMDD);
+		System.out.println(horaHHMMSS);
+		System.out.println(cidade);
+		System.out.println(uf);
+		
+		ConstrutorMapa construtor = new ConstrutorMapa();
+		DecoradorMapa decorador = new DecoradorMapa();
+
+		//Cidade c = getCidade("CAxíAS","ma");
+		//Cidade c = getCidade("Uberlândia","mG");
+		Cidade c = mapeador.getCidade(cidade, uf);
+		if (c.getCodigo() > 0){
+    		Mapa mapa 	= construtor.buildMapa(nome, dataAAAAMMDD, horaHHMMSS,-3, c.getLatitude(),c.getLongitude());
+    		String json = decorador.getJSON(mapa);
+    		System.out.println(json);
+		} else {
+			System.out.println("Não conseguiu abrir arquivo de cidades");
 		}
-		return retorno;
+		
+		
+		//Mapa mapaItamar 	= construtor.buildMapa("Itamar","1972.6.29","5.0.0",-3,"-4.51.32","-43.21.22");
+		//Mapa mapaSaoPaulo	= construtor.buildMapa("São Paulo","2014.10.8","17.0.0",-3,"-23.32.51","-46.38.10");
+		//Mapa mapaLivia		= construtor.buildMapa("Lívia","2001.9.28","7.0.0",-3,"-18.55.7","-48.16.38");
+		//Mapa mapaSibele		= construtor.buildMapa("Sibele", "1978.9.30","10.0.0",-3,"-18.55.7","-48.16.38");
+		//Mapa mapaRosangela	= construtor.buildMapa("Rosangela", "1983.1.15","07.30.0",-3,"-18.52.14","-48.52.51");
+		//mapaLivia.setNome("Lívia");
+
+
+		//System.out.println("\n**********************************************\n");
+
+		/*
+		decorador.display(mapaLivia);
+		System.out.println("\n**********************************************\n");
+		//construtor.display(mapaSaoPaulo);
+		//System.out.println("\n**********************************************\n");
+		decorador.display(mapaSibele);
+		System.out.println("\n**********************************************\n");
+		decorador.display(mapaRosangela);
+		*/
 	}
 	
-	public static String removerAcentos(String acentuada) {  
-	    CharSequence cs = new StringBuilder(acentuada);  
-	    return Normalizer.normalize(cs, Normalizer.Form.NFKD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");  
-	}
+	
 	
 	/*
 	public void http(String url, String body) throws ClientProtocolException, IOException  {
