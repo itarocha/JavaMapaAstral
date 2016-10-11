@@ -1,34 +1,5 @@
 package br.itarocha.carta;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.List;
-/*
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-//import org.apache.http.impl.client.CloseableHttpClient;
-//import org.apache.http.impl.client.HttpClientBuilder;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
-import com.google.gson.Gson;
-*/
-
-
 class Pojo
 {
 	String name;
@@ -38,23 +9,13 @@ class Pojo
 
 public class Main {
 
-	//private List<Cidade> listaCidades = new ArrayList<Cidade>();
-	private MapeadorCidades mapeador = new MapeadorCidades();
-
 	//http://th-mack.de/international/download/index.html
 	//http://www.radixpro.org/fix-east-west.html
 	public static void main( String[] args) {
+		// Rode com os seguintes argumentos
+		// "Itamar Rocha" "1972.06.29" "05.00.00" "Caxias" "MA"
 		
-		
-		/*
-		try {
-			mapeador.load("ephe/classes.prop");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		*/
-		
-		if (args.length != 5){
+		if (args.length < 5){
 			System.out.println("Entre com os 5 parâmetros com espaço");
 			System.out.println("Nome");
 			System.out.println("Data de nascimento formato AAAA.MM.DD");
@@ -70,72 +31,25 @@ public class Main {
 		String cidade = args[3];
 		String uf = args[4];
 		
-		//String entrada = "Gisele Bündchen da Conceição e Silva foi batizada assim em homenagem à sua conterrânea de Uberlândia";
-		//System.out.println(removerAcentos(entrada).toLowerCase());
-		
-		
-		
-		
 		Main m = new Main();
 		m.go(nome, data, hora, cidade, uf);
-		
-		System.out.println("Eita");
-		//m.go("Itamar Rocha", "1972.06.29", "05.00.00", "Caxias", "MA");
-		
-		
-		//Conversions.GrauDecimalParaGrauSexagesimal(-43.3532d);
-		//Conversions.GrauDecimalParaGrauSexagesimal(-4.8655d);
 	}
 	
-	public Main(){
-		//carregarArquivoCidades();
-		MapeadorCidades mapeador = new MapeadorCidades();
-		//mapeador.carregarArquivoCidades();
-	}
+	public Main(){}
 
 	// ("Itamar","1972.6.29","5.0.0", Caxias, MA
 	public void go(String nome, String dataAAAAMMDD, String horaHHMMSS, String cidade, String uf ){
-		
-		System.out.println(nome);
-		System.out.println(dataAAAAMMDD);
-		System.out.println(horaHHMMSS);
-		System.out.println(cidade);
-		System.out.println(uf);
-		
 		ConstrutorMapa construtor = new ConstrutorMapa();
 		DecoradorMapa decorador = new DecoradorMapa();
 
-		//Cidade c = getCidade("CAxíAS","ma");
-		//Cidade c = getCidade("Uberlândia","mG");
-		Cidade c = mapeador.getCidade(cidade, uf);
+		Cidade c = new MapeadorCidades().getCidade(cidade, uf);
 		if (c.getCodigo() > 0){
-    		Mapa mapa 	= construtor.buildMapa(nome, dataAAAAMMDD, horaHHMMSS,-3, c.getLatitude(),c.getLongitude());
+    		Mapa mapa 	= construtor.buildMapa(nome, dataAAAAMMDD, horaHHMMSS,-3, c.getLatitude(), c.getLongitude());
     		String json = decorador.getJSON(mapa);
     		System.out.println(json);
 		} else {
-			System.out.println("Não conseguiu abrir arquivo de cidades");
+			System.out.println("Não conseguiu localizar cidade");
 		}
-		
-		
-		//Mapa mapaItamar 	= construtor.buildMapa("Itamar","1972.6.29","5.0.0",-3,"-4.51.32","-43.21.22");
-		//Mapa mapaSaoPaulo	= construtor.buildMapa("São Paulo","2014.10.8","17.0.0",-3,"-23.32.51","-46.38.10");
-		//Mapa mapaLivia		= construtor.buildMapa("Lívia","2001.9.28","7.0.0",-3,"-18.55.7","-48.16.38");
-		//Mapa mapaSibele		= construtor.buildMapa("Sibele", "1978.9.30","10.0.0",-3,"-18.55.7","-48.16.38");
-		//Mapa mapaRosangela	= construtor.buildMapa("Rosangela", "1983.1.15","07.30.0",-3,"-18.52.14","-48.52.51");
-		//mapaLivia.setNome("Lívia");
-
-
-		//System.out.println("\n**********************************************\n");
-
-		/*
-		decorador.display(mapaLivia);
-		System.out.println("\n**********************************************\n");
-		//construtor.display(mapaSaoPaulo);
-		//System.out.println("\n**********************************************\n");
-		decorador.display(mapaSibele);
-		System.out.println("\n**********************************************\n");
-		decorador.display(mapaRosangela);
-		*/
 	}
 	
 	

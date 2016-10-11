@@ -14,8 +14,6 @@ public class Mapa {
 	private Calendar calendar;
 	private Coordenada latitude;
 	private Coordenada longitude;
-	private String data; // 
-	private String hora; //
 	private int fuso;
 	private double sideralTime; 
 	

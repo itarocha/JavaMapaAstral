@@ -2,10 +2,7 @@ package br.itarocha.carta;
 
 public class DecoradorMapa {
 
-	private Mapa mapa;
-
-	public DecoradorMapa(){
-	}
+	public DecoradorMapa(){}
 	
 	public String getJSON(Mapa mapa){
 		String retorno = "";
@@ -21,8 +18,6 @@ public class DecoradorMapa {
 		retorno += displayAspectos(mapa);
 		
 		retorno = "{"+retorno+"}";
-		
-		//System.out.println(retorno);
 		
 		return retorno;
 	}
@@ -47,16 +42,6 @@ public class DecoradorMapa {
     							CartaUtil.grau(latitude)+lat,
     							CartaUtil.grau(longitude)+lon
     			);
-    	/*
-    	if (false) {
-			retorno = "Nome: " + mapa.getNome();
-			retorno += "Data: " + mapa.getData()+" "+mapa.getHora();
-			retorno += "Localização: " +
-					CartaUtil.grau(longitude) + (longitude > 0 ? "E" : "W") +
-					" / " +
-					CartaUtil.grau(latitude) + (latitude > 0 ? "N" : "S");
-    	}
-    	*/
     	
 		return retorno;
 		
@@ -96,32 +81,16 @@ public class DecoradorMapa {
 					gms[1],					// mm 
 					gms[2]					// ss 
 					);
-
-			/*	
-			System.out.println(String.format("%s %s %s %s %s - %7.4f",
-					pp.getSiglaPlaneta(), 		// Planeta
-					pp.getGrau(),				// Longitude  
-					pp.getGrauNaCasa(),			// Grau na Casa 
-					pp.getNomeSigno(),			// Signo
-					pp.getStatusRetrogrado() 	// Retrogrado ou Direto?
-					
-					,pp.getCasa()
-					));
-			*/
 		}
 		retorno =  "\"planetas_signos\":[\n"+
 					retorno.substring(0,retorno.length()-2)+
 					"\n]";
-		
-		
-		//System.out.println(saida);
 		return retorno;
 	}
 
 	private String displayPlanetasNasCasas(Mapa mapa){
 		String retorno = "";
 		
-		//System.out.println("\nPLANETAS");
 		for(PlanetaPosicao pp : mapa.getPosicoesPlanetas()){
 			retorno += String.format("{\"planeta_casa\":\"%s\", \"casa\":\"%d\", \"posicao\":\"%s\"},\n",
 					pp.getSiglaPlaneta(), 	// Planeta
@@ -132,14 +101,10 @@ public class DecoradorMapa {
 		retorno =  "\"planetas_casas\":[\n"+
 				  retorno.substring(0,retorno.length()-2)+
 				  "\n]";
-		
-		
-		//System.out.println(retorno);
 		return retorno;
 	}
 
 	private String displayCuspides(Mapa mapa){ 
-		//System.out.println("\nCÚSPIDES");
 		String retorno = "";
 		for (Cuspide c: mapa.getListaCuspides() ){
 			if (c.getNumero() > 12) { break; }
@@ -155,28 +120,15 @@ public class DecoradorMapa {
 					gms[1],					// mm 
 					gms[2]					// ss 
 					);
-			
-			/*
-			if (!isJson) {
-			System.out.println(String.format("casa %02d %s %s %s", 
-					c.getNumero(), 
-					c.getGrau(), 
-					c.getGrauNaCasa(), 
-					c.getSigno()
-					));		
-			}
-			*/
 		}
 		retorno =  "\"cuspides\":[\n"+
 				  retorno.substring(0,retorno.length()-2)+
 				  "\n]";
-		//System.out.println(saida);
 		return retorno;
 	}
 
 	private String displayAspectos(Mapa mapa){
 		String retorno = "";
-		//System.out.println("\nASPECTOS");
 		for(ItemAspecto ite : mapa.getListaAspectos()){
 			PlanetaAspecto pA = ite.getPlanetaA();
 			PlanetaAspecto pB = ite.getPlanetaB();
@@ -186,25 +138,10 @@ public class DecoradorMapa {
 					pB.getSigla(),
 					ite.getAspecto()
 					);
-			/*
-			if (!isJson) {
-				System.out.println(String.format("%s %s %s (%s e %s) [%02d x %02d] = %s", 
-						pA.getSigla(), 
-						ite.getAspecto(),
-						pB.getSigla(),
-						pA.getGrau(),
-						pB.getGrau(),
-						pA.getCoordenada(), 
-						pB.getCoordenada(), 
-						ite.getAspecto() ));
-			}
-			*/
 		}
 		retorno = "\"aspectos\":[\n"+
 				  retorno.substring(0,retorno.length()-2)+
 				  "\n]";
-		
-		//System.out.println(saida);
 		return retorno;
 	}
 	
